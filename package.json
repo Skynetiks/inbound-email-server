@@ -1,0 +1,19 @@
+{
+  "name": "inbound-mail",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@types/mailparser": "^3.4.6",
+    "@types/smtp-server": "^3.5.12",
+    "emailjs": "^4.0.3",
+    "mailparser": "^3.7.4",
+    "nodemailer": "^7.0.5",
+    "smtp-server": "^3.14.0"
+  }
+}
