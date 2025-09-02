@@ -58,7 +58,7 @@ function createServer({ secure }: { secure: boolean }) {
 
 // Port 25 — STARTTLS (not secure by default, but can upgrade)
 createServer({ secure: false })
-  .listen(25, "::", () => {
+  .listen(25, "0.0.0.0", () => {
     console.log("📮 SMTP server listening on port 25 (STARTTLS)");
   })
   .on("error", (err) => {
