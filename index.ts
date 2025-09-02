@@ -1,10 +1,11 @@
 import { SMTPServer } from "smtp-server";
 import fs from "fs";
 import path from "path";
+import os from "os";
 
 // Paths to your cert + key
-const keyPath = path.join("~/smtp-certs/private", "server.key");
-const certPath = path.join("~/smtp-certs/certs", "server.crt");
+const keyPath = path.join(os.homedir(), "smtp-certs/private", "server.key");
+const certPath = path.join(os.homedir(), "smtp-certs/certs", "server.crt");
 
 const server = new SMTPServer({
   authOptional: true,
