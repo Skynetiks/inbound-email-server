@@ -20,6 +20,12 @@ function createServer({ secure }: { secure: boolean }) {
         callback();
       });
     },
+    onRcptTo(address, session, callback) {
+      if (address.address.endsWith("@rajeevkr.dev")) {
+        return callback(); // accept
+      }
+      return callback(new Error("Relaying denied"));
+    },
   });
 }
 
