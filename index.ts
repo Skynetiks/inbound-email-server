@@ -7,10 +7,9 @@ const certPath = "/etc/letsencrypt/live/mail.rajeevkr.dev/fullchain.pem";
 function createServer({ secure }: { secure: boolean }) {
   return new SMTPServer({
     authOptional: true,
-    secure,
     name: "vps-d0506dab.vps.ovh.net",
-    key: fs.readFileSync(keyPath),
-    cert: fs.readFileSync(certPath),
+    secure: false,
+    disabledCommands: ["STARTTLS"],
     onData(stream, session, callback) {
       console.log("📂 DATA command started from", session.remoteAddress);
       const chunks: Buffer[] = [];
@@ -57,15 +56,6 @@ function createServer({ secure }: { secure: boolean }) {
 createServer({ secure: false })
   .listen(25, "0.0.0.0", () => {
     console.log("📮 SMTP server listening on port 25 (STARTTLS)");
-  })
-  .on("error", (err) => {
-    console.error("❌ SMTP Server error:", err);
-  });
-
-// Port 465 — Implicit TLS
-createServer({ secure: true })
-  .listen(465, "0.0.0.0", () => {
-    console.log("🔐 SMTP server listening on port 465 (SMTPS)");
   })
   .on("error", (err) => {
     console.error("❌ SMTP Server error:", err);
