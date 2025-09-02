@@ -11,7 +11,6 @@ function createServer({ secure }: { secure: boolean }) {
     authOptional: true,
     secure,
     name: "vps-d0506dab.vps.ovh.net",
-
     key: fs.readFileSync(keyPath),
     cert: fs.readFileSync(certPath),
     onData(stream, session, callback) {
@@ -65,7 +64,11 @@ createServer({ secure: false })
     console.error("❌ SMTP Server error:", err);
   });
 
-// // Port 465 — Implicit TLS
-// createServer({ secure: true }).listen(465, () => {
-//   console.log("🔐 SMTP server listening on port 465 (SMTPS)");
-// });
+// Port 465 — Implicit TLS
+createServer({ secure: true })
+  .listen(465, "0.0.0.0", () => {
+    console.log("🔐 SMTP server listening on port 465 (SMTPS)");
+  })
+  .on("error", (err) => {
+    console.error("❌ SMTP Server error:", err);
+  });
