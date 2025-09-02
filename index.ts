@@ -3,58 +3,32 @@ import fs from "fs";
 import path from "path";
 import os from "os";
 
-// Paths to your cert + key
 const keyPath = path.join(os.homedir(), "smtp-certs/private", "server.key");
 const certPath = path.join(os.homedir(), "smtp-certs/certs", "server.crt");
 
-const server = new SMTPServer({
-  authOptional: true,
-  secure: true, // enable TLS (like SMTPS)
-  key: fs.readFileSync(keyPath),
-  cert: fs.readFileSync(certPath),
-
-  async onData(stream, session, callback) {
-    try {
-      const data = await processEmailStream(stream);
-      console.log("📩 Headers:", data);
-      callback();
-    } catch (err) {
-      console.error("Error parsing email:", err);
-      callback(err as Error);
-    }
-  },
-});
-
-server.listen(465, () => {
-  console.log("🔐 SMTP server (TLS) listening on port 465");
-});
-
-async function processEmailStream(
-  stream: NodeJS.ReadableStream
-): Promise<Record<string, string>> {
-  const chunks: Buffer[] = [];
-
-  return new Promise((resolve) => {
-    stream.on("data", (chunk) => chunks.push(chunk));
-    stream.on("end", () => {
-      const rawEmail = Buffer.concat(chunks).toString("utf-8");
-
-      // Extract headers only
-      const headers: Record<string, string> = {};
-      const headerLines = rawEmail.split(/\r?\n/);
-      let i = 0;
-      while (i < headerLines.length && headerLines[i] !== "") {
-        const line = headerLines[i];
-        const match = line.match(/^([^:]+):\s*(.+)$/);
-        if (match) {
-          const key = match[1].trim();
-          const value = match[2].trim();
-          headers[key] = value;
-        }
-        i++;
-      }
-
-      resolve(headers);
-    });
+function createServer({ secure }: { secure: boolean }) {
+  return new SMTPServer({
+    authOptional: true,
+    secure,
+    key: fs.readFileSync(keyPath),
+    cert: fs.readFileSync(certPath),
+    onData(stream, session, callback) {
+      const chunks: Buffer[] = [];
+      stream.on("data", (chunk) => chunks.push(chunk));
+      stream.on("end", () => {
+        console.log("📩 Received mail", Buffer.concat(chunks).toString());
+        callback();
+      });
+    },
   });
 }
+
+// Port 25 — STARTTLS (not secure by default, but can upgrade)
+createServer({ secure: false }).listen(25, () => {
+  console.log("📮 SMTP server listening on port 25 (STARTTLS)");
+});
+
+// Port 465 — Implicit TLS
+createServer({ secure: true }).listen(465, () => {
+  console.log("🔐 SMTP server listening on port 465 (SMTPS)");
+});
