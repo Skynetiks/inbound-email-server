@@ -35,7 +35,7 @@ createServer({ secure: false }).listen(25, () => {
   console.log("📮 SMTP server listening on port 25 (STARTTLS)");
 });
 
-// Port 465 — Implicit TLS
-createServer({ secure: true }).listen(465, () => {
-  console.log("🔐 SMTP server listening on port 465 (SMTPS)");
-});
+// // Port 465 — Implicit TLS
+// createServer({ secure: true }).listen(465, () => {
+//   console.log("🔐 SMTP server listening on port 465 (SMTPS)");
+// });
