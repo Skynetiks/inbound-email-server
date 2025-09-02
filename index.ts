@@ -11,6 +11,7 @@ function createServer({ secure }: { secure: boolean }) {
     authOptional: true,
     secure,
     name: "vps-d0506dab.vps.ovh.net",
+
     key: fs.readFileSync(keyPath),
     cert: fs.readFileSync(certPath),
     onData(stream, session, callback) {
@@ -38,6 +39,11 @@ function createServer({ secure }: { secure: boolean }) {
       callback(null, { user: auth.username });
     },
 
+    onSecure(_, session, callback) {
+      console.log("🔒 Secure connection established");
+      callback();
+    },
+
     onRcptTo(address, session, callback) {
       if (address.address.endsWith("@rajeevkr.dev")) {
         console.log("Accepted recipient:", address.address);
@@ -51,9 +57,13 @@ function createServer({ secure }: { secure: boolean }) {
 }
 
 // Port 25 — STARTTLS (not secure by default, but can upgrade)
-createServer({ secure: false }).listen(25, "::", () => {
-  console.log("📮 SMTP server listening on port 25 (STARTTLS)");
-});
+createServer({ secure: false })
+  .listen(25, "::", () => {
+    console.log("📮 SMTP server listening on port 25 (STARTTLS)");
+  })
+  .on("error", (err) => {
+    console.error("❌ SMTP Server error:", err);
+  });
 
 // // Port 465 — Implicit TLS
 // createServer({ secure: true }).listen(465, () => {
