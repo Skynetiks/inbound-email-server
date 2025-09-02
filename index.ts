@@ -1,10 +1,8 @@
 import { SMTPServer } from "smtp-server";
 import fs from "fs";
-import path from "path";
-import os from "os";
 
-const keyPath = path.join(os.homedir(), "smtp-certs/private", "server.key");
-const certPath = path.join(os.homedir(), "smtp-certs/certs", "server.crt");
+const keyPath = "/etc/letsencrypt/live/mail.rajeevkr.dev/privkey.pem";
+const certPath = "/etc/letsencrypt/live/mail.rajeevkr.dev/fullchain.pem";
 
 function createServer({ secure }: { secure: boolean }) {
   return new SMTPServer({
