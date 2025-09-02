@@ -21,6 +21,10 @@ function createServer({ secure }: { secure: boolean }) {
         callback();
       });
     },
+    onConnect(session, callback) {
+      console.log("Incoming connection from", session.remoteAddress);
+      callback();
+    },
     onRcptTo(address, session, callback) {
       if (address.address.endsWith("@rajeevkr.dev")) {
         return callback(); // accept
