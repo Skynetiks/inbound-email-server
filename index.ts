@@ -3,8 +3,8 @@ import fs from "fs";
 import path from "path";
 
 // Paths to your cert + key
-const keyPath = path.join("/etc/ssl/private", "server.key");
-const certPath = path.join("/etc/ssl/certs", "server.crt");
+const keyPath = path.join("~/smtp-certs/private", "server.key");
+const certPath = path.join("~/smtp-certs/certs", "server.crt");
 
 const server = new SMTPServer({
   authOptional: true,
