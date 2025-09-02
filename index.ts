@@ -10,6 +10,7 @@ function createServer({ secure }: { secure: boolean }) {
   return new SMTPServer({
     authOptional: true,
     secure,
+    name: "vps-d0506dab.vps.ovh.net",
     key: fs.readFileSync(keyPath),
     cert: fs.readFileSync(certPath),
     onData(stream, session, callback) {
