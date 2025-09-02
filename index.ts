@@ -14,6 +14,7 @@ function createServer({ secure }: { secure: boolean }) {
     key: fs.readFileSync(keyPath),
     cert: fs.readFileSync(certPath),
     onData(stream, session, callback) {
+      console.log("📂 DATA command started from", session.remoteAddress);
       const chunks: Buffer[] = [];
       stream.on("data", (chunk) => chunks.push(chunk));
       stream.on("end", () => {
@@ -22,20 +23,35 @@ function createServer({ secure }: { secure: boolean }) {
       });
     },
     onConnect(session, callback) {
-      console.log("Incoming connection from", session.remoteAddress);
-      callback();
+      console.log("🔗 New connection from", session.remoteAddress);
+      console.log("    clientHostname:", session.clientHostname);
+      callback(); // accept connection
     },
+    onMailFrom(address, session, callback) {
+      console.log("📧 MAIL FROM:", address.address);
+      callback(); // accept
+    },
+
+    // Optional: log authentication attempts
+    onAuth(auth, session, callback) {
+      console.log("🔑 Auth attempt:", auth.username);
+      callback(null, { user: auth.username });
+    },
+
     onRcptTo(address, session, callback) {
       if (address.address.endsWith("@rajeevkr.dev")) {
+        console.log("Accepted recipient:", address.address);
         return callback(); // accept
       }
+
+      console.log("Rejected recipient:", address.address);
       return callback(new Error("Relaying denied"));
     },
   });
 }
 
 // Port 25 — STARTTLS (not secure by default, but can upgrade)
-createServer({ secure: false }).listen(25, () => {
+createServer({ secure: false }).listen(25, "::", () => {
   console.log("📮 SMTP server listening on port 25 (STARTTLS)");
 });
 
