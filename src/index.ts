@@ -10,7 +10,7 @@ function createServer({ secure }: { secure: boolean }) {
     secure,
     size: MAX_MAIL_SIZE,
     authOptional: false,
-    disabledCommands: ["STARTTLS"],
+    disabledCommands: ["STARTTLS", "AUTH"],
     banner: "Welcome to Skyfunnel SMTP service",
 
     onConnect(session, callback) {
