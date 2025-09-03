@@ -1,14 +1,9 @@
 #!/bin/bash
 set -e
 
-# Configuration
-IMAGE_NAME="inbound-mail"
-CONTAINER_NAME="smtp-server"
-DOCKER_COMPOSE_FILE="docker-compose.yml"
 
-# Optional: pull latest image from registry
-echo "📦 Pulling latest image..."
-docker pull $IMAGE_NAME || true
+CONTAINER_NAME="inbound-mail"
+DOCKER_COMPOSE_FILE="docker-compose.yml"
 
 # Stop container if running
 if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
