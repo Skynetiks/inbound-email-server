@@ -1,0 +1,16 @@
+# Ignore node/bun modules (they are installed inside container)
+node_modules
+bun.lockb
+
+# Ignore local build outputs, logs, temp files
+dist
+logs
+tmp
+*.log
+
+# Ignore git files
+.git
+.gitignore
+
+# Ignore local env files (optional, for safety)
+.env

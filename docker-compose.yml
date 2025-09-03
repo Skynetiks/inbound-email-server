@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  smtp-server:
+    build: .
+    container_name: inbound-mail
+    env_file:
+      - .env
+    ports:
+      - "25:25" # Inbound SMTP
+      - "587:587" # Optional submission/STARTTLS
+    restart: unless-stopped
