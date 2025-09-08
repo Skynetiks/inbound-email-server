@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   smtp-server:
-    image: diwanshumidha/inbound-mail
+    image: ${IMAGE_NAME}:latest
     container_name: inbound-mail
     env_file:
       - .env
