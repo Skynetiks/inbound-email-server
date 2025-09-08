@@ -21,6 +21,8 @@ jobs:
           sudo docker pull ${{ secrets.IMAGE_NAME }}:latest
 
       - name: Run reload.sh
+        env:
+          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
         run: |
           chmod +x /home/ubuntu/scripts/reload.sh
           sudo /home/ubuntu/scripts/reload.sh
