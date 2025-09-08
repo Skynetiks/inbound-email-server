@@ -24,5 +24,6 @@ jobs:
         env:
           IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
         run: |
+          export IMAGE_NAME
           chmod +x /home/ubuntu/scripts/reload.sh
           sudo /home/ubuntu/scripts/reload.sh
