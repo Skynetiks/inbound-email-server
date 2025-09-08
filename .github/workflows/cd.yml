@@ -21,4 +21,4 @@ jobs:
       - name: Run reload.sh
         run: |
           chmod +x /home/ubuntu/scripts/reload.sh
-          /home/ubuntu/scripts/reload.sh
+          sudo /home/ubuntu/scripts/reload.sh
