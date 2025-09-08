@@ -16,7 +16,7 @@ jobs:
 
       - name: Pull latest Docker image
         run: |
-          docker pull ${{ secrets.IMAGE_NAME }}:latest
+          sudo docker pull ${{ secrets.IMAGE_NAME }}:latest
 
       - name: Run reload.sh
         run: |
