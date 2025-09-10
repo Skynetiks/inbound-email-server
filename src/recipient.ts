@@ -24,7 +24,7 @@ export async function isDomainVerified(domain: string): Promise<boolean> {
     const res = await sql<{ count: string }[]>`
       SELECT COUNT(*)::text as count
       FROM "SenderDomains"
-      WHERE domain = 'rajeevkr.dev'::text
+      WHERE domain = ${normalizedDomain}::text
     `;
 
     const verified = parseInt(res[0].count) > 0;
