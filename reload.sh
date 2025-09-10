@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-
 CONTAINER_NAME="inbound-mail"
 DOCKER_COMPOSE_FILE="docker-compose.yml"
 
@@ -20,7 +19,7 @@ fi
 # Start container
 if [ -f "$DOCKER_COMPOSE_FILE" ]; then
     echo "🚀 Starting container with docker-compose..."
-    docker-compose up -d
+    docker compose up -d
 else
     echo "🚀 Starting container with docker run..."
     exit 1
