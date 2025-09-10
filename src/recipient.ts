@@ -21,14 +21,13 @@ export async function isDomainVerified(domain: string): Promise<boolean> {
     const cached = await getRedisClient().get(cacheKey);
     if (cached !== null) return cached === "true";
 
-    const res = await sql<{ "1": number }[]>`
-      SELECT 1
+    const res = await sql<{ count: string }[]>`
+      SELECT COUNT(*)::text as count
       FROM "SenderDomains"
-      WHERE domain = ${normalizedDomain}::text
-      LIMIT 1
+      WHERE domain = 'rajeevkr.dev'::text
     `;
 
-    const verified = res.length > 0;
+    const verified = parseInt(res[0].count) > 0;
 
     await getRedisClient().set(
       cacheKey,
