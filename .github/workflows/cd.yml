@@ -10,15 +10,20 @@ jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: self-hosted
+    env:
+      IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Pull latest Docker image
         run: |
-          docker pull ${{ secrets.IMAGE_NAME }}:latest
+          sudo docker pull ${{ secrets.IMAGE_NAME }}:latest
 
       - name: Run reload.sh
+        env:
+          IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
         run: |
+          export IMAGE_NAME
           chmod +x /home/ubuntu/scripts/reload.sh
-          /home/ubuntu/scripts/reload.sh
+          sudo /home/ubuntu/scripts/reload.sh
